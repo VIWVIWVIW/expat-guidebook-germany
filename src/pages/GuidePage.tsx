@@ -71,6 +71,8 @@ const guides: Record<string, { title: string; meta: string; time: string; docs: 
     ],
     compareLink: "/compare/health-insurance",
     compareLabel: "Compare Health Insurance",
+    relatedFaq: "/faq/health-insurance",
+    relatedTable: "/tables/health-insurance-table",
   },
   "how-to-switch-electricity": {
     title: "How to Switch Your Electricity Provider",
