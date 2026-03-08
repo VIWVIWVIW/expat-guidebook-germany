@@ -4,7 +4,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import heroGuides from "@/assets/hero-guides.jpg";
 
-const guides: Record<string, { title: string; meta: string; time: string; docs: string[]; steps: string[]; compareLink: string; compareLabel: string }> = {
+const guides: Record<string, { title: string; meta: string; time: string; docs: string[]; steps: string[]; compareLink: string; compareLabel: string; relatedFaq?: string; relatedTable?: string }> = {
   "how-to-open-bank-account": {
     title: "How to Open a Bank Account in Germany",
     meta: "Step-by-step guide to opening a German bank account as an expat. Requirements, documents, and best banks.",
