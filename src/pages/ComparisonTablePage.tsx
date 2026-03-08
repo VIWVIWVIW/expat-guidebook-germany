@@ -53,6 +53,40 @@ const tables: Record<string, { title: string; columns: { key: string; label: str
       { provider: "Naturstrom", cost: "~€100", green: "Yes", english: "No", rating: "4.5" },
     ],
   },
+  "internet-table": {
+    title: "Internet Comparison Table",
+    columns: [
+      { key: "provider", label: "Provider" },
+      { key: "speed", label: "Speed" },
+      { key: "cost", label: "Monthly Cost" },
+      { key: "contract", label: "Contract" },
+      { key: "english", label: "English Support" },
+      { key: "rating", label: "Rating" },
+    ],
+    rows: [
+      { provider: "Telekom", speed: "Up to 250 Mbit/s", cost: "€39.95", contract: "24 months", english: "Partial", rating: "4.0" },
+      { provider: "Vodafone", speed: "Up to 1000 Mbit/s", cost: "€39.99", contract: "24 months", english: "Yes", rating: "3.5" },
+      { provider: "O2", speed: "Up to 100 Mbit/s", cost: "€29.99", contract: "24 months", english: "Partial", rating: "3.8" },
+      { provider: "1&1", speed: "Up to 250 Mbit/s", cost: "€34.99", contract: "24 months", english: "No", rating: "3.6" },
+    ],
+  },
+  "investment-table": {
+    title: "Investment Platform Comparison Table",
+    columns: [
+      { key: "platform", label: "Platform" },
+      { key: "type", label: "Type" },
+      { key: "cost", label: "Fees" },
+      { key: "etf", label: "ETF Savings Plans" },
+      { key: "english", label: "English App" },
+      { key: "rating", label: "Rating" },
+    ],
+    rows: [
+      { platform: "Trade Republic", type: "Broker", cost: "€1 per trade", etf: "Yes (free)", english: "Yes", rating: "4.5" },
+      { platform: "Scalable Capital", type: "Broker/Robo", cost: "€0.99/trade or flat", etf: "Yes (free)", english: "Yes", rating: "4.3" },
+      { platform: "ING", type: "Broker", cost: "€4.90+", etf: "Yes", english: "No", rating: "4.0" },
+      { platform: "Consorsbank", type: "Broker", cost: "€3.95+", etf: "Yes", english: "Partial", rating: "3.9" },
+    ],
+  },
 };
 
 export default function ComparisonTablePage() {

@@ -4,7 +4,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import heroGuides from "@/assets/hero-guides.jpg";
 
-const guides: Record<string, { title: string; meta: string; time: string; docs: string[]; steps: string[]; compareLink: string; compareLabel: string }> = {
+const guides: Record<string, { title: string; meta: string; time: string; docs: string[]; steps: string[]; compareLink: string; compareLabel: string; relatedFaq?: string; relatedTable?: string }> = {
   "how-to-open-bank-account": {
     title: "How to Open a Bank Account in Germany",
     meta: "Step-by-step guide to opening a German bank account as an expat. Requirements, documents, and best banks.",
@@ -20,6 +20,8 @@ const guides: Record<string, { title: string; meta: string; time: string; docs: 
     ],
     compareLink: "/compare/bank-accounts",
     compareLabel: "Compare Bank Accounts",
+    relatedFaq: "/faq/bank-account",
+    relatedTable: "/tables/bank-accounts-table",
   },
   "how-to-register-address": {
     title: "How to Register Your Address in Germany",
@@ -36,6 +38,7 @@ const guides: Record<string, { title: string; meta: string; time: string; docs: 
     ],
     compareLink: "/guides/how-to-get-tax-id",
     compareLabel: "Next: Get Your Tax ID",
+    relatedFaq: "/faq/registration",
   },
   "how-to-get-tax-id": {
     title: "How to Get Your Tax ID (Steuer-ID)",
@@ -51,6 +54,7 @@ const guides: Record<string, { title: string; meta: string; time: string; docs: 
     ],
     compareLink: "/guides/how-to-register-address",
     compareLabel: "First: Register Your Address",
+    relatedFaq: "/faq/tax-id",
   },
   "how-to-choose-health-insurance": {
     title: "How to Choose Health Insurance",
@@ -67,6 +71,8 @@ const guides: Record<string, { title: string; meta: string; time: string; docs: 
     ],
     compareLink: "/compare/health-insurance",
     compareLabel: "Compare Health Insurance",
+    relatedFaq: "/faq/health-insurance",
+    relatedTable: "/tables/health-insurance-table",
   },
   "how-to-switch-electricity": {
     title: "How to Switch Your Electricity Provider",
@@ -83,6 +89,8 @@ const guides: Record<string, { title: string; meta: string; time: string; docs: 
     ],
     compareLink: "/compare/electricity-gas",
     compareLabel: "Compare Electricity Providers",
+    relatedFaq: "/faq/electricity",
+    relatedTable: "/tables/electricity-table",
   },
   "how-to-set-up-internet": {
     title: "How to Set Up Internet at Home",
@@ -99,6 +107,8 @@ const guides: Record<string, { title: string; meta: string; time: string; docs: 
     ],
     compareLink: "/compare/internet",
     compareLabel: "Compare Internet Providers",
+    relatedFaq: "/faq/internet",
+    relatedTable: "/tables/internet-table",
   },
 };
 
@@ -114,6 +124,8 @@ export default function GuidePage() {
     );
   }
 
+  const allGuides = Object.entries(guides).map(([key, g]) => ({ key, title: g.title.replace("How to ", "") }));
+
   return (
     <Layout>
       <PageHeader
@@ -122,47 +134,91 @@ export default function GuidePage() {
         breadcrumbs={[{ label: "Guides" }, { label: guide.title }]}
         heroImage={heroGuides}
       />
-      <div className="container py-12 max-w-3xl">
-        <div className="flex flex-wrap gap-4 mb-8">
-          <div className="bg-secondary rounded-lg px-4 py-2">
-            <span className="text-xs text-muted-foreground">Usually takes</span>
-            <p className="font-medium text-sm">{guide.time}</p>
-          </div>
-        </div>
+      <div className="container py-12 max-w-4xl">
+        <div className="flex flex-col lg:flex-row gap-10">
+          {/* Sidebar */}
+          <aside className="lg:w-56 shrink-0">
+            <h3 className="font-display text-sm mb-3 text-muted-foreground uppercase tracking-wider">All Guides</h3>
+            <nav className="space-y-1">
+              {allGuides.map((g) => (
+                <Link
+                  key={g.key}
+                  to={`/guides/${g.key}`}
+                  className={`block px-3 py-2 text-sm rounded-md transition-colors ${g.key === slug ? "bg-primary text-primary-foreground" : "hover:bg-secondary"}`}
+                >
+                  {g.title}
+                </Link>
+              ))}
+            </nav>
+          </aside>
 
-        <div className="mb-10">
-          <h2 className="font-display text-xl mb-4">What You Need</h2>
-          <ul className="space-y-2">
-            {guide.docs.map((doc, i) => (
-              <li key={i} className="flex items-start gap-2 text-sm">
-                <span className="mt-1 h-1.5 w-1.5 rounded-full bg-primary shrink-0" />
-                {doc}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="mb-10">
-          <h2 className="font-display text-xl mb-6">Step by Step</h2>
-          <div className="space-y-6">
-            {guide.steps.map((step, i) => (
-              <div key={i} className="flex gap-4">
-                <div className="flex-shrink-0 h-8 w-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-sm font-bold">
-                  {i + 1}
-                </div>
-                <div className="pt-1">
-                  <p className="text-sm leading-relaxed">{step}</p>
-                </div>
+          {/* Main content */}
+          <div className="flex-1">
+            <div className="flex flex-wrap gap-4 mb-8">
+              <div className="bg-secondary rounded-lg px-4 py-2">
+                <span className="text-xs text-muted-foreground">Usually takes</span>
+                <p className="font-medium text-sm">{guide.time}</p>
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
 
-        <div className="bg-secondary rounded-lg p-6 text-center">
-          <h3 className="font-display text-lg mb-2">Ready to get started?</h3>
-          <Link to={guide.compareLink}>
-            <Button>{guide.compareLabel} →</Button>
-          </Link>
+            <div className="mb-10">
+              <h2 className="font-display text-xl mb-4">What You Need</h2>
+              <ul className="space-y-2">
+                {guide.docs.map((doc, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm">
+                    <span className="mt-1 h-1.5 w-1.5 rounded-full bg-primary shrink-0" />
+                    {doc}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="mb-10">
+              <h2 className="font-display text-xl mb-6">Step by Step</h2>
+              <div className="space-y-6">
+                {guide.steps.map((step, i) => (
+                  <div key={i} className="flex gap-4">
+                    <div className="flex-shrink-0 h-8 w-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-sm font-bold">
+                      {i + 1}
+                    </div>
+                    <div className="pt-1">
+                      <p className="text-sm leading-relaxed">{step}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Related links */}
+            <div className="bg-secondary rounded-lg p-6 mb-8">
+              <h3 className="font-display text-lg mb-3">Related Resources</h3>
+              <div className="flex flex-wrap gap-2">
+                {guide.relatedFaq && (
+                  <Link to={guide.relatedFaq}>
+                    <Button variant="outline" size="sm">FAQ →</Button>
+                  </Link>
+                )}
+                {guide.relatedTable && (
+                  <Link to={guide.relatedTable}>
+                    <Button variant="outline" size="sm">Comparison Table →</Button>
+                  </Link>
+                )}
+                <Link to="/checklists/first-30-days">
+                  <Button variant="outline" size="sm">First 30 Days Checklist →</Button>
+                </Link>
+                <Link to="/glossary">
+                  <Button variant="outline" size="sm">Glossary →</Button>
+                </Link>
+              </div>
+            </div>
+
+            <div className="bg-primary/5 border border-primary/20 rounded-lg p-6 text-center">
+              <h3 className="font-display text-lg mb-2">Ready to get started?</h3>
+              <Link to={guide.compareLink}>
+                <Button>{guide.compareLabel} →</Button>
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </Layout>

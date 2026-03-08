@@ -1,13 +1,16 @@
 import { useParams, Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { PageHeader } from "@/components/PageHeader";
+import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import heroFaq from "@/assets/hero-faq.jpg";
 
-const faqData: Record<string, { title: string; description: string; questions: { q: string; a: string }[] }> = {
+const faqData: Record<string, { title: string; description: string; questions: { q: string; a: string }[]; relatedGuide?: string; relatedCompare?: string }> = {
   "bank-account": {
     title: "Bank Account FAQ",
     description: "Common questions about opening and using a bank account in Germany.",
+    relatedGuide: "/guides/how-to-open-bank-account",
+    relatedCompare: "/compare/bank-accounts",
     questions: [
       { q: "Can I open a bank account without speaking German?", a: "Yes! Banks like N26, Wise, and Revolut offer fully English apps and customer support. Some traditional banks like Commerzbank also have English-speaking staff in larger cities." },
       { q: "Do I need a Schufa score to open an account?", a: "Not always. Wise and Revolut don't require a Schufa check. Traditional banks like Deutsche Bank or Commerzbank will check your Schufa, but you can still open a basic account (Basiskonto) regardless." },
@@ -123,6 +126,27 @@ export default function FAQPage() {
             </AccordionItem>
           ))}
         </Accordion>
+
+        {(faq.relatedGuide || faq.relatedCompare) && (
+          <div className="mt-10 bg-secondary rounded-lg p-6">
+            <h3 className="font-display text-lg mb-3">Related Resources</h3>
+            <div className="flex flex-wrap gap-3">
+              {faq.relatedGuide && (
+                <Link to={faq.relatedGuide}>
+                  <Button variant="outline" size="sm">Read the Guide →</Button>
+                </Link>
+              )}
+              {faq.relatedCompare && (
+                <Link to={faq.relatedCompare}>
+                  <Button variant="outline" size="sm">Compare Now →</Button>
+                </Link>
+              )}
+              <Link to="/glossary">
+                <Button variant="outline" size="sm">Glossary →</Button>
+              </Link>
+            </div>
+          </div>
+        )}
       </div>
     </Layout>
   );
