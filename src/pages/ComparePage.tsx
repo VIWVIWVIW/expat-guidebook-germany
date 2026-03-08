@@ -28,7 +28,7 @@ const compareData: Record<string, { title: string; description: string; columns:
   "health-insurance": {
     title: "Compare Health Insurance",
     description: "GKV vs PKV — understand your options and find the right health insurance in Germany.",
-    tablePath: "/compare/health-insurance-table",
+    tablePath: "/tables/health-insurance-table",
     columns: [
       { key: "provider", label: "Provider" },
       { key: "type", label: "Type" },
