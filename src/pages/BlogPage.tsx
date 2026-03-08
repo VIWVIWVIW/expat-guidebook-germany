@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { PageHeader } from "@/components/PageHeader";
+import heroBlog from "@/assets/hero-blog.jpg";
 
 const articles = [
   { slug: "best-bank-accounts-2025", title: "Best Bank Accounts for Expats 2025", excerpt: "A comprehensive comparison of the best bank accounts available for foreigners in Germany, including fees, English support, and Schufa requirements.", date: "2025-03-01" },

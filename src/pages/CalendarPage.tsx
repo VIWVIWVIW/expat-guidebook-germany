@@ -3,6 +3,7 @@ import { Layout } from "@/components/Layout";
 import { PageHeader } from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
+import heroCalendar from "@/assets/hero-calendar.jpg";
 
 interface CalendarEntry {
   month: number;

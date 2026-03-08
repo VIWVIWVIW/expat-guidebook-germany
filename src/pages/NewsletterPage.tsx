@@ -1,6 +1,7 @@
 import { Layout } from "@/components/Layout";
 import { PageHeader } from "@/components/PageHeader";
 import { NewsletterForm } from "@/components/NewsletterForm";
+import heroNewsletter from "@/assets/hero-newsletter.jpg";
 
 export default function NewsletterPage() {
   return (

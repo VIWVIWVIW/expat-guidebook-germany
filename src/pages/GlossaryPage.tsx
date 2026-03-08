@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { PageHeader } from "@/components/PageHeader";
+import heroGlossary from "@/assets/hero-glossary.jpg";
 
 const glossaryTerms = [
   { term: "Anmeldung", definition: "Address registration — mandatory within 14 days of moving.", guide: "/guides/how-to-register-address" },
