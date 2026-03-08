@@ -63,7 +63,7 @@ const compareData: Record<string, { title: string; description: string; columns:
   internet: {
     title: "Compare Internet Providers",
     description: "Find the fastest and cheapest internet for your home in Germany.",
-    tablePath: "/compare/internet-table",
+    tablePath: "/tables/internet-table",
     columns: [
       { key: "provider", label: "Provider" },
       { key: "speed", label: "Speed" },
