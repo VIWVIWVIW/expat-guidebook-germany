@@ -4,6 +4,7 @@ import { Layout } from "@/components/Layout";
 import { PageHeader } from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
+import heroChecklist from "@/assets/hero-checklist.jpg";
 
 const checklists: Record<string, { title: string; description: string; items: string[] }> = {
   "first-30-days": {
@@ -96,6 +97,7 @@ export default function ChecklistPage() {
         title={checklist.title}
         description={checklist.description}
         breadcrumbs={[{ label: "Checklists" }, { label: checklist.title }]}
+        heroImage={heroChecklist}
       />
       <div className="container py-12 max-w-2xl">
         <div className="flex gap-3 mb-8">

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Landmark, Shield, Zap, Wifi, BookOpen, Calendar, MapPin, CheckSquare } from "lucide-react";
+import heroHomepage from "@/assets/hero-homepage.jpg";
 
 const features = [
   { icon: Landmark, label: "Bank Accounts", href: "/compare/bank-accounts", desc: "Find the best bank with English support" },
@@ -21,12 +22,14 @@ const Index = () => {
   return (
     <Layout>
       {/* Hero */}
-      <section className="hero-gradient py-20 md:py-28">
-        <div className="container text-center">
-          <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-primary-foreground mb-4 animate-fade-in">
+      <section className="relative py-20 md:py-28 overflow-hidden">
+        <img src={heroHomepage} alt="Germany cityscape" className="absolute inset-0 w-full h-full object-cover" loading="eager" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/20" />
+        <div className="container text-center relative z-10">
+          <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-white mb-4 animate-fade-in">
             Your finance basics in Germany — simplified
           </h1>
-          <p className="text-lg md:text-xl text-primary-foreground/80 max-w-2xl mx-auto mb-8 animate-fade-in" style={{ animationDelay: "0.1s" }}>
+          <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-8 animate-fade-in" style={{ animationDelay: "0.1s" }}>
             Banking, insurance, electricity, taxes — everything expats need to know, in one place.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center animate-fade-in" style={{ animationDelay: "0.2s" }}>
@@ -36,7 +39,7 @@ const Index = () => {
               </Button>
             </Link>
             <Link to="/guides/how-to-open-bank-account">
-              <Button size="lg" variant="outline" className="text-base px-8 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10">
+              <Button size="lg" variant="outline" className="text-base px-8 border-white/30 text-white hover:bg-white/10">
                 Read Guides
               </Button>
             </Link>

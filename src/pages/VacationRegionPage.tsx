@@ -3,6 +3,21 @@ import { Layout } from "@/components/Layout";
 import { PageHeader } from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 
+import heroBavaria from "@/assets/hero-bavaria.jpg";
+import heroSaxony from "@/assets/hero-saxony.jpg";
+import heroThuringia from "@/assets/hero-thuringia.jpg";
+import heroFranconia from "@/assets/hero-franconia.jpg";
+import heroRhine from "@/assets/hero-rhine.jpg";
+import heroNorth from "@/assets/hero-north.jpg";
+import heroSouthwest from "@/assets/hero-southwest.jpg";
+import heroEast from "@/assets/hero-east.jpg";
+
+const regionImages: Record<string, string> = {
+  bavaria: heroBavaria, saxony: heroSaxony, thuringia: heroThuringia,
+  franconia: heroFranconia, rhine: heroRhine, north: heroNorth,
+  southwest: heroSouthwest, east: heroEast,
+};
+
 interface Place {
   name: string;
   description: string;
@@ -111,6 +126,7 @@ export default function VacationRegionPage() {
         title={`Vacation: ${region.name}`}
         description={region.intro}
         breadcrumbs={[{ label: "Vacation", href: "/vacation" }, { label: region.name }]}
+        heroImage={regionImages[regionSlug || "bavaria"]}
       />
       <div className="container py-12 max-w-3xl">
         {region.places.map((place, i) => (
