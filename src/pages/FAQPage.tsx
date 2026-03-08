@@ -8,6 +8,8 @@ const faqData: Record<string, { title: string; description: string; questions: {
   "bank-account": {
     title: "Bank Account FAQ",
     description: "Common questions about opening and using a bank account in Germany.",
+    relatedGuide: "/guides/how-to-open-bank-account",
+    relatedCompare: "/compare/bank-accounts",
     questions: [
       { q: "Can I open a bank account without speaking German?", a: "Yes! Banks like N26, Wise, and Revolut offer fully English apps and customer support. Some traditional banks like Commerzbank also have English-speaking staff in larger cities." },
       { q: "Do I need a Schufa score to open an account?", a: "Not always. Wise and Revolut don't require a Schufa check. Traditional banks like Deutsche Bank or Commerzbank will check your Schufa, but you can still open a basic account (Basiskonto) regardless." },
