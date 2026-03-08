@@ -54,6 +54,7 @@ const guides: Record<string, { title: string; meta: string; time: string; docs: 
     ],
     compareLink: "/guides/how-to-register-address",
     compareLabel: "First: Register Your Address",
+    relatedFaq: "/faq/tax-id",
   },
   "how-to-choose-health-insurance": {
     title: "How to Choose Health Insurance",
