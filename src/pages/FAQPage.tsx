@@ -2,6 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { PageHeader } from "@/components/PageHeader";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import heroFaq from "@/assets/hero-faq.jpg";
 
 const faqData: Record<string, { title: string; description: string; questions: { q: string; a: string }[] }> = {
   "bank-account": {
@@ -101,6 +102,7 @@ export default function FAQPage() {
         title={faq.title}
         description={faq.description}
         breadcrumbs={[{ label: "FAQ" }, { label: faq.title }]}
+        heroImage={heroFaq}
       />
       <div className="container py-12 max-w-3xl">
         <div className="flex flex-wrap gap-2 mb-8">

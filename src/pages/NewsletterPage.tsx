@@ -1,6 +1,7 @@
 import { Layout } from "@/components/Layout";
 import { PageHeader } from "@/components/PageHeader";
 import { NewsletterForm } from "@/components/NewsletterForm";
+import heroNewsletter from "@/assets/hero-newsletter.jpg";
 
 export default function NewsletterPage() {
   return (
@@ -9,6 +10,7 @@ export default function NewsletterPage() {
         title="Newsletter"
         description="Get the latest expat finance tips, guides, and deals delivered to your inbox."
         breadcrumbs={[{ label: "Newsletter" }]}
+        heroImage={heroNewsletter}
       />
       <div className="container py-12 max-w-lg">
         <div className="bg-card border rounded-lg p-8 text-center">

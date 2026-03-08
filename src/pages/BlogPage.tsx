@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { PageHeader } from "@/components/PageHeader";
+import heroBlog from "@/assets/hero-blog.jpg";
 
 const articles = [
   { slug: "best-bank-accounts-2025", title: "Best Bank Accounts for Expats 2025", excerpt: "A comprehensive comparison of the best bank accounts available for foreigners in Germany, including fees, English support, and Schufa requirements.", date: "2025-03-01" },
@@ -17,6 +18,7 @@ export default function BlogPage() {
         title="Blog"
         description="Tips, guides, and insights for expats navigating life in Germany."
         breadcrumbs={[{ label: "Blog" }]}
+        heroImage={heroBlog}
       />
       <div className="container py-12 max-w-3xl">
         <div className="space-y-6">

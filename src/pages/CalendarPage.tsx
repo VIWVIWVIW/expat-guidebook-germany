@@ -3,6 +3,7 @@ import { Layout } from "@/components/Layout";
 import { PageHeader } from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
+import heroCalendar from "@/assets/hero-calendar.jpg";
 
 interface CalendarEntry {
   month: number;
@@ -51,6 +52,7 @@ export default function CalendarPage() {
         title="Annual Calendar for Expats"
         description="Key dates, deadlines, and public holidays in Germany — never miss an important date."
         breadcrumbs={[{ label: "Calendar" }]}
+        heroImage={heroCalendar}
       />
       <div className="container py-12">
         <div className="flex flex-wrap gap-2 mb-8">
