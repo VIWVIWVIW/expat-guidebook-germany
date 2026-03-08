@@ -99,11 +99,17 @@ export default function CalendarPage() {
         <div className="mt-12 bg-secondary rounded-lg p-6">
           <h3 className="font-display text-lg mb-4">Download Calendar Files</h3>
           <div className="flex flex-wrap gap-3">
-            <Button variant="outline" size="sm" asChild><a href="#"><Download className="h-4 w-4 mr-1.5" />Public Holidays ICS</a></Button>
-            <Button variant="outline" size="sm" asChild><a href="#"><Download className="h-4 w-4 mr-1.5" />Tax Deadlines ICS</a></Button>
-            <Button variant="outline" size="sm" asChild><a href="#"><Download className="h-4 w-4 mr-1.5" />All Dates ICS</a></Button>
+            <Button variant="outline" size="sm" onClick={() => downloadICS("Public Holidays", entries.filter(e => e.category === "Public Holidays"))}>
+              <Download className="h-4 w-4 mr-1.5" />Public Holidays ICS
+            </Button>
+            <Button variant="outline" size="sm" onClick={() => downloadICS("Tax Deadlines", entries.filter(e => e.category === "Tax"))}>
+              <Download className="h-4 w-4 mr-1.5" />Tax Deadlines ICS
+            </Button>
+            <Button variant="outline" size="sm" onClick={() => downloadICS("All Expat Dates", entries)}>
+              <Download className="h-4 w-4 mr-1.5" />All Dates ICS
+            </Button>
           </div>
-          <p className="text-xs text-muted-foreground mt-3">ICS download links coming soon.</p>
+          <p className="text-xs text-muted-foreground mt-3">Downloads a .ics file you can import into Google Calendar, Outlook, or Apple Calendar.</p>
         </div>
       </div>
     </Layout>
