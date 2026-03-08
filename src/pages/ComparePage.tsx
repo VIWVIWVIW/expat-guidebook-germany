@@ -6,11 +6,13 @@ import { ComparisonTable } from "@/components/ComparisonTable";
 import { Button } from "@/components/ui/button";
 import heroCompare from "@/assets/hero-compare.jpg";
 
-const compareData: Record<string, { title: string; description: string; columns: { key: string; label: string }[]; rows: Record<string, string>[]; tablePath: string }> = {
+const compareData: Record<string, { title: string; description: string; columns: { key: string; label: string }[]; rows: Record<string, string>[]; tablePath: string; guidePath: string; faqPath: string }> = {
   "bank-accounts": {
     title: "Compare Bank Accounts",
     description: "Find the best bank account for expats in Germany. Compare fees, English support, and features.",
     tablePath: "/tables/bank-accounts-table",
+    guidePath: "/guides/how-to-open-bank-account",
+    faqPath: "/faq/bank-account",
     columns: [
       { key: "bank", label: "Bank" },
       { key: "cost", label: "Monthly Cost" },
@@ -30,6 +32,8 @@ const compareData: Record<string, { title: string; description: string; columns:
     title: "Compare Health Insurance",
     description: "GKV vs PKV — understand your options and find the right health insurance in Germany.",
     tablePath: "/tables/health-insurance-table",
+    guidePath: "/guides/how-to-choose-health-insurance",
+    faqPath: "/faq/health-insurance",
     columns: [
       { key: "provider", label: "Provider" },
       { key: "type", label: "Type" },
@@ -48,6 +52,8 @@ const compareData: Record<string, { title: string; description: string; columns:
     title: "Compare Electricity & Gas",
     description: "Switch your energy provider and save hundreds of euros per year.",
     tablePath: "/tables/electricity-table",
+    guidePath: "/guides/how-to-switch-electricity",
+    faqPath: "/faq/electricity",
     columns: [
       { key: "provider", label: "Provider" },
       { key: "cost", label: "Monthly Cost" },
@@ -65,6 +71,8 @@ const compareData: Record<string, { title: string; description: string; columns:
     title: "Compare Internet Providers",
     description: "Find the fastest and cheapest internet for your home in Germany.",
     tablePath: "/tables/internet-table",
+    guidePath: "/guides/how-to-set-up-internet",
+    faqPath: "/faq/internet",
     columns: [
       { key: "provider", label: "Provider" },
       { key: "speed", label: "Speed" },
@@ -82,6 +90,8 @@ const compareData: Record<string, { title: string; description: string; columns:
     title: "Compare Investment Platforms",
     description: "Start investing in Germany — compare brokers and robo-advisors.",
     tablePath: "/tables/investment-table",
+    guidePath: "/guides/how-to-open-bank-account",
+    faqPath: "/faq/bank-account",
     columns: [
       { key: "platform", label: "Platform" },
       { key: "type", label: "Type" },
