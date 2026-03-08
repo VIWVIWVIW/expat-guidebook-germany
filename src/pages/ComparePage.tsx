@@ -4,6 +4,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { IframePlaceholder } from "@/components/IframePlaceholder";
 import { ComparisonTable } from "@/components/ComparisonTable";
 import { Button } from "@/components/ui/button";
+import heroCompare from "@/assets/hero-compare.jpg";
 
 const compareData: Record<string, { title: string; description: string; columns: { key: string; label: string }[]; rows: Record<string, string>[]; tablePath: string }> = {
   "bank-accounts": {
@@ -114,6 +115,7 @@ export default function ComparePage() {
         title={data.title}
         description={data.description}
         breadcrumbs={[{ label: "Compare", href: "/compare/bank-accounts" }, { label: data.title }]}
+        heroImage={heroCompare}
       />
       <div className="container py-12 space-y-10">
         <div className="prose max-w-none">

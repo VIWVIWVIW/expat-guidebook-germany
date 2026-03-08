@@ -4,6 +4,22 @@ import { PageHeader } from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
+import heroBerlin from "@/assets/hero-berlin.jpg";
+import heroMunich from "@/assets/hero-munich.jpg";
+import heroHamburg from "@/assets/hero-hamburg.jpg";
+import heroFrankfurt from "@/assets/hero-frankfurt.jpg";
+import heroCologne from "@/assets/hero-cologne.jpg";
+import heroStuttgart from "@/assets/hero-stuttgart.jpg";
+import heroDresden from "@/assets/hero-dresden.jpg";
+import heroLeipzig from "@/assets/hero-leipzig.jpg";
+import heroDusseldorf from "@/assets/hero-dusseldorf.jpg";
+
+const cityImages: Record<string, string> = {
+  berlin: heroBerlin, munich: heroMunich, hamburg: heroHamburg,
+  frankfurt: heroFrankfurt, cologne: heroCologne, stuttgart: heroStuttgart,
+  dresden: heroDresden, leipzig: heroLeipzig, dusseldorf: heroDusseldorf,
+};
+
 const cities: Record<string, { name: string; intro: string; banking: string; costs: string; notes: string }> = {
   berlin: {
     name: "Berlin",
@@ -86,6 +102,7 @@ export default function CityGuidePage() {
         title={`${city.name} – Expat Guide`}
         description={city.intro}
         breadcrumbs={[{ label: "City Guides" }, { label: city.name }]}
+        heroImage={cityImages[citySlug || "berlin"]}
       />
       <div className="container py-12 max-w-3xl">
         <div className="flex flex-wrap gap-2 mb-8">

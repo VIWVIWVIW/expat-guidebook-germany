@@ -2,6 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { PageHeader } from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
+import heroGuides from "@/assets/hero-guides.jpg";
 
 const guides: Record<string, { title: string; meta: string; time: string; docs: string[]; steps: string[]; compareLink: string; compareLabel: string }> = {
   "how-to-open-bank-account": {
@@ -119,6 +120,7 @@ export default function GuidePage() {
         title={guide.title}
         description={guide.meta}
         breadcrumbs={[{ label: "Guides" }, { label: guide.title }]}
+        heroImage={heroGuides}
       />
       <div className="container py-12 max-w-3xl">
         <div className="flex flex-wrap gap-4 mb-8">
