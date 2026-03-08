@@ -42,6 +42,7 @@ export default function GlossaryPage() {
         title="Glossary"
         description="Key German terms every expat should know — from Anmeldung to Zählernummer."
         breadcrumbs={[{ label: "Glossary" }]}
+        heroImage={heroGlossary}
       />
       <div className="container py-12 max-w-3xl">
         <input

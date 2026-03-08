@@ -18,6 +18,7 @@ export default function BlogPage() {
         title="Blog"
         description="Tips, guides, and insights for expats navigating life in Germany."
         breadcrumbs={[{ label: "Blog" }]}
+        heroImage={heroBlog}
       />
       <div className="container py-12 max-w-3xl">
         <div className="space-y-6">

@@ -102,6 +102,7 @@ export default function FAQPage() {
         title={faq.title}
         description={faq.description}
         breadcrumbs={[{ label: "FAQ" }, { label: faq.title }]}
+        heroImage={heroFaq}
       />
       <div className="container py-12 max-w-3xl">
         <div className="flex flex-wrap gap-2 mb-8">

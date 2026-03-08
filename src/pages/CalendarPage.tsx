@@ -52,6 +52,7 @@ export default function CalendarPage() {
         title="Annual Calendar for Expats"
         description="Key dates, deadlines, and public holidays in Germany — never miss an important date."
         breadcrumbs={[{ label: "Calendar" }]}
+        heroImage={heroCalendar}
       />
       <div className="container py-12">
         <div className="flex flex-wrap gap-2 mb-8">

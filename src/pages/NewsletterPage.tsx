@@ -10,6 +10,7 @@ export default function NewsletterPage() {
         title="Newsletter"
         description="Get the latest expat finance tips, guides, and deals delivered to your inbox."
         breadcrumbs={[{ label: "Newsletter" }]}
+        heroImage={heroNewsletter}
       />
       <div className="container py-12 max-w-lg">
         <div className="bg-card border rounded-lg p-8 text-center">
