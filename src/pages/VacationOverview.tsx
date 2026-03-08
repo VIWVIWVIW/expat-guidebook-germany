@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
+import { SEOHead } from "@/components/SEOHead";
 import { PageHeader } from "@/components/PageHeader";
-import { MapPin } from "lucide-react";
+import { staticRoutes } from "@/config/routes";
 import heroVacation from "@/assets/hero-vacation.jpg";
 
 import heroBavaria from "@/assets/hero-bavaria.jpg";
@@ -25,8 +26,11 @@ const regions = [
 ];
 
 export default function VacationOverview() {
+  const meta = staticRoutes["/vacation"];
+
   return (
     <Layout>
+      <SEOHead title={meta.title} description={meta.description} />
       <PageHeader
         title="Vacation in Germany"
         description="Discover Germany beyond the cities — from Alpine lakes to Baltic beaches."

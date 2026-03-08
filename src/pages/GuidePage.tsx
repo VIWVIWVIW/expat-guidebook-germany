@@ -1,13 +1,14 @@
 import { useParams, Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
+import { SEOHead } from "@/components/SEOHead";
 import { PageHeader } from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
+import { guideRouteMeta } from "@/config/routes";
 import heroGuides from "@/assets/hero-guides.jpg";
 
-const guides: Record<string, { title: string; meta: string; time: string; docs: string[]; steps: string[]; compareLink: string; compareLabel: string; relatedFaq?: string; relatedTable?: string }> = {
+const guides: Record<string, { title: string; time: string; docs: string[]; steps: string[]; compareLink: string; compareLabel: string; relatedFaq?: string; relatedTable?: string }> = {
   "how-to-open-bank-account": {
     title: "How to Open a Bank Account in Germany",
-    meta: "Step-by-step guide to opening a German bank account as an expat. Requirements, documents, and best banks.",
     time: "1–5 business days",
     docs: ["Passport or ID card", "Proof of address (Meldebescheinigung)", "Visa / residence permit", "Tax ID (Steuer-ID) — sometimes optional"],
     steps: [
@@ -25,7 +26,6 @@ const guides: Record<string, { title: string; meta: string; time: string; docs: 
   },
   "how-to-register-address": {
     title: "How to Register Your Address in Germany",
-    meta: "Guide to Anmeldung — registering your address at the Bürgeramt within 14 days of moving.",
     time: "Same day (appointment needed)",
     docs: ["Passport or ID card", "Rental contract (Mietvertrag)", "Wohnungsgeberbestätigung (landlord confirmation)", "Anmeldung form (available at Bürgeramt)"],
     steps: [
@@ -42,7 +42,6 @@ const guides: Record<string, { title: string; meta: string; time: string; docs: 
   },
   "how-to-get-tax-id": {
     title: "How to Get Your Tax ID (Steuer-ID)",
-    meta: "Everything about the German tax identification number for expats.",
     time: "2–4 weeks after registration",
     docs: ["Meldebescheinigung (proof of registration)", "Passport"],
     steps: [
@@ -58,7 +57,6 @@ const guides: Record<string, { title: string; meta: string; time: string; docs: 
   },
   "how-to-choose-health-insurance": {
     title: "How to Choose Health Insurance",
-    meta: "GKV vs PKV explained. How to pick the right health insurance as an expat in Germany.",
     time: "Varies",
     docs: ["Employment contract or proof of income", "Passport", "Residence permit"],
     steps: [
@@ -76,7 +74,6 @@ const guides: Record<string, { title: string; meta: string; time: string; docs: 
   },
   "how-to-switch-electricity": {
     title: "How to Switch Your Electricity Provider",
-    meta: "Save money by switching from the default energy provider. Step-by-step for expats.",
     time: "2–4 weeks",
     docs: ["Current electricity bill or meter number (Zählernummer)", "Bank details for direct debit"],
     steps: [
@@ -94,7 +91,6 @@ const guides: Record<string, { title: string; meta: string; time: string; docs: 
   },
   "how-to-set-up-internet": {
     title: "How to Set Up Internet at Home",
-    meta: "Guide to getting broadband internet in your German apartment.",
     time: "1–4 weeks",
     docs: ["Proof of address", "Bank details", "Previous provider info (if switching)"],
     steps: [
@@ -115,10 +111,12 @@ const guides: Record<string, { title: string; meta: string; time: string; docs: 
 export default function GuidePage() {
   const { slug } = useParams<{ slug: string }>();
   const guide = guides[slug || ""];
+  const meta = guideRouteMeta[slug || ""];
 
   if (!guide) {
     return (
       <Layout>
+        <SEOHead title="Guide Not Found" description="The requested guide was not found." noIndex />
         <PageHeader title="Guide Not Found" />
       </Layout>
     );
@@ -126,11 +124,28 @@ export default function GuidePage() {
 
   const allGuides = Object.entries(guides).map(([key, g]) => ({ key, title: g.title.replace("How to ", "") }));
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: guide.title,
+    description: meta?.description || guide.title,
+    step: guide.steps.map((step, i) => ({
+      "@type": "HowToStep",
+      position: i + 1,
+      text: step,
+    })),
+  };
+
   return (
     <Layout>
+      <SEOHead
+        title={meta?.title || guide.title}
+        description={meta?.description || guide.title}
+        jsonLd={jsonLd}
+      />
       <PageHeader
         title={guide.title}
-        description={guide.meta}
+        description={meta?.description}
         breadcrumbs={[{ label: "Guides" }, { label: guide.title }]}
         heroImage={heroGuides}
       />
@@ -139,7 +154,7 @@ export default function GuidePage() {
           {/* Sidebar */}
           <aside className="lg:w-56 shrink-0">
             <h3 className="font-display text-sm mb-3 text-muted-foreground uppercase tracking-wider">All Guides</h3>
-            <nav className="space-y-1">
+            <nav className="space-y-1" aria-label="Guide navigation">
               {allGuides.map((g) => (
                 <Link
                   key={g.key}
@@ -152,7 +167,7 @@ export default function GuidePage() {
             </nav>
           </aside>
 
-          {/* Main content */}
+          {/* Main */}
           <div className="flex-1">
             <div className="flex flex-wrap gap-4 mb-8">
               <div className="bg-secondary rounded-lg px-4 py-2">
@@ -161,7 +176,7 @@ export default function GuidePage() {
               </div>
             </div>
 
-            <div className="mb-10">
+            <section className="mb-10">
               <h2 className="font-display text-xl mb-4">What You Need</h2>
               <ul className="space-y-2">
                 {guide.docs.map((doc, i) => (
@@ -171,9 +186,9 @@ export default function GuidePage() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </section>
 
-            <div className="mb-10">
+            <section className="mb-10">
               <h2 className="font-display text-xl mb-6">Step by Step</h2>
               <div className="space-y-6">
                 {guide.steps.map((step, i) => (
@@ -187,28 +202,19 @@ export default function GuidePage() {
                   </div>
                 ))}
               </div>
-            </div>
+            </section>
 
-            {/* Related links */}
             <div className="bg-secondary rounded-lg p-6 mb-8">
               <h3 className="font-display text-lg mb-3">Related Resources</h3>
               <div className="flex flex-wrap gap-2">
                 {guide.relatedFaq && (
-                  <Link to={guide.relatedFaq}>
-                    <Button variant="outline" size="sm">FAQ →</Button>
-                  </Link>
+                  <Link to={guide.relatedFaq}><Button variant="outline" size="sm">FAQ →</Button></Link>
                 )}
                 {guide.relatedTable && (
-                  <Link to={guide.relatedTable}>
-                    <Button variant="outline" size="sm">Comparison Table →</Button>
-                  </Link>
+                  <Link to={guide.relatedTable}><Button variant="outline" size="sm">Comparison Table →</Button></Link>
                 )}
-                <Link to="/checklists/first-30-days">
-                  <Button variant="outline" size="sm">First 30 Days Checklist →</Button>
-                </Link>
-                <Link to="/glossary">
-                  <Button variant="outline" size="sm">Glossary →</Button>
-                </Link>
+                <Link to="/checklists/first-30-days"><Button variant="outline" size="sm">First 30 Days Checklist →</Button></Link>
+                <Link to="/glossary"><Button variant="outline" size="sm">Glossary →</Button></Link>
               </div>
             </div>
 

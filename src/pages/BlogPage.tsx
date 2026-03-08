@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
+import { SEOHead } from "@/components/SEOHead";
 import { PageHeader } from "@/components/PageHeader";
+import { staticRoutes } from "@/config/routes";
 import heroBlog from "@/assets/hero-blog.jpg";
+import { siteConfig } from "@/config/site";
 
 const articles = [
   { slug: "best-bank-accounts-2025", title: "Best Bank Accounts for Expats 2025", excerpt: "A comprehensive comparison of the best bank accounts available for foreigners in Germany, including fees, English support, and Schufa requirements.", date: "2025-03-01" },
@@ -11,9 +14,27 @@ const articles = [
   { slug: "schufa-explained", title: "Schufa Explained: What It Is and Why It Matters", excerpt: "Everything you need to know about Germany's credit scoring system.", date: "2025-01-10" },
 ];
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  name: "my-basics.de Blog",
+  url: `${siteConfig.url}/blog`,
+  description: staticRoutes["/blog"].description,
+  blogPost: articles.map((a) => ({
+    "@type": "BlogPosting",
+    headline: a.title,
+    datePublished: a.date,
+    description: a.excerpt,
+    url: `${siteConfig.url}/blog/${a.slug}`,
+  })),
+};
+
 export default function BlogPage() {
+  const meta = staticRoutes["/blog"];
+
   return (
     <Layout>
+      <SEOHead title={meta.title} description={meta.description} jsonLd={jsonLd} />
       <PageHeader
         title="Blog"
         description="Tips, guides, and insights for expats navigating life in Germany."
@@ -28,8 +49,10 @@ export default function BlogPage() {
               to={`/blog/${article.slug}`}
               className="block bg-card border rounded-lg p-6 card-shadow hover:card-shadow-hover transition-all duration-300 hover:-translate-y-0.5"
             >
-              <p className="text-xs text-muted-foreground mb-2">{new Date(article.date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</p>
-              <h2 className="font-display text-lg mb-2 group-hover:text-primary">{article.title}</h2>
+              <time className="text-xs text-muted-foreground mb-2 block" dateTime={article.date}>
+                {new Date(article.date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+              </time>
+              <h2 className="font-display text-lg mb-2">{article.title}</h2>
               <p className="text-sm text-muted-foreground">{article.excerpt}</p>
               <span className="text-sm text-primary mt-3 inline-block">Read more →</span>
             </Link>

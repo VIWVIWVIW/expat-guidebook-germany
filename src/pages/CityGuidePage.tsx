@@ -1,8 +1,9 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
+import { SEOHead } from "@/components/SEOHead";
 import { PageHeader } from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { getCityMeta } from "@/config/routes";
 
 import heroBerlin from "@/assets/hero-berlin.jpg";
 import heroMunich from "@/assets/hero-munich.jpg";
@@ -93,11 +94,19 @@ export default function CityGuidePage() {
   const city = cities[citySlug || "berlin"];
 
   if (!city) {
-    return <Layout><PageHeader title="City Not Found" /></Layout>;
+    return (
+      <Layout>
+        <SEOHead title="City Not Found" description="The requested city guide was not found." noIndex />
+        <PageHeader title="City Not Found" />
+      </Layout>
+    );
   }
+
+  const meta = getCityMeta(city.name);
 
   return (
     <Layout>
+      <SEOHead title={meta.title} description={meta.description} />
       <PageHeader
         title={`${city.name} – Expat Guide`}
         description={city.intro}
@@ -105,7 +114,7 @@ export default function CityGuidePage() {
         heroImage={cityImages[citySlug || "berlin"]}
       />
       <div className="container py-12 max-w-3xl">
-        <div className="flex flex-wrap gap-2 mb-8">
+        <nav className="flex flex-wrap gap-2 mb-8" aria-label="City selection">
           {allCities.map((c) => (
             <Link key={c.key} to={`/cities/${c.key}`}>
               <button className={`px-3 py-1.5 rounded-full text-sm border transition-colors ${c.key === citySlug ? "bg-primary text-primary-foreground border-primary" : "hover:bg-secondary"}`}>
@@ -113,7 +122,7 @@ export default function CityGuidePage() {
               </button>
             </Link>
           ))}
-        </div>
+        </nav>
 
         <div className="space-y-8">
           <section>

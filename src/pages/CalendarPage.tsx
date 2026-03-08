@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
+import { SEOHead } from "@/components/SEOHead";
 import { PageHeader } from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
+import { staticRoutes } from "@/config/routes";
+import { trackEvent } from "@/services/analytics";
 import heroCalendar from "@/assets/hero-calendar.jpg";
 
 interface CalendarEntry {
@@ -43,6 +46,7 @@ const months = ["January", "February", "March", "April", "May", "June", "July", 
 
 export default function CalendarPage() {
   const [activeCategory, setActiveCategory] = useState("All");
+  const meta = staticRoutes["/calendar"];
 
   const filtered = activeCategory === "All" ? entries : entries.filter((e) => e.category === activeCategory);
 
@@ -75,10 +79,12 @@ export default function CalendarPage() {
     a.download = `${name.replace(/\s+/g, "-").toLowerCase()}.ics`;
     a.click();
     URL.revokeObjectURL(url);
+    trackEvent({ name: "ics_download", calendar: name });
   };
 
   return (
     <Layout>
+      <SEOHead title={meta.title} description={meta.description} />
       <PageHeader
         title="Annual Calendar for Expats"
         description="Key dates, deadlines, and public holidays in Germany — never miss an important date."
@@ -86,7 +92,7 @@ export default function CalendarPage() {
         heroImage={heroCalendar}
       />
       <div className="container py-12">
-        <div className="flex flex-wrap gap-2 mb-8">
+        <nav className="flex flex-wrap gap-2 mb-8" aria-label="Calendar filters">
           {categories.map((cat) => (
             <button
               key={cat}
@@ -96,7 +102,7 @@ export default function CalendarPage() {
               {cat}
             </button>
           ))}
-        </div>
+        </nav>
 
         <div className="space-y-10">
           {months.map((month, mi) => {
@@ -131,13 +137,13 @@ export default function CalendarPage() {
           <h3 className="font-display text-lg mb-4">Download Calendar Files</h3>
           <div className="flex flex-wrap gap-3">
             <Button variant="outline" size="sm" onClick={() => downloadICS("Public Holidays", entries.filter(e => e.category === "Public Holidays"))}>
-              <Download className="h-4 w-4 mr-1.5" />Public Holidays ICS
+              <Download className="h-4 w-4 mr-1.5" />Public Holidays
             </Button>
             <Button variant="outline" size="sm" onClick={() => downloadICS("Tax Deadlines", entries.filter(e => e.category === "Tax"))}>
-              <Download className="h-4 w-4 mr-1.5" />Tax Deadlines ICS
+              <Download className="h-4 w-4 mr-1.5" />Tax Deadlines
             </Button>
             <Button variant="outline" size="sm" onClick={() => downloadICS("All Expat Dates", entries)}>
-              <Download className="h-4 w-4 mr-1.5" />All Dates ICS
+              <Download className="h-4 w-4 mr-1.5" />All Dates
             </Button>
           </div>
           <p className="text-xs text-muted-foreground mt-3">Downloads a .ics file you can import into Google Calendar, Outlook, or Apple Calendar.</p>

@@ -1,7 +1,10 @@
 import { useParams } from "react-router-dom";
 import { Layout } from "@/components/Layout";
+import { SEOHead } from "@/components/SEOHead";
 import { PageHeader } from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
+import { getAffiliateLink } from "@/services/affiliate";
+import { trackEvent } from "@/services/analytics";
 
 import heroBavaria from "@/assets/hero-bavaria.jpg";
 import heroSaxony from "@/assets/hero-saxony.jpg";
@@ -117,11 +120,22 @@ export default function VacationRegionPage() {
   const region = regions[regionSlug || "bavaria"];
 
   if (!region) {
-    return <Layout><PageHeader title="Region Not Found" /></Layout>;
+    return (
+      <Layout>
+        <SEOHead title="Region Not Found" description="The requested vacation region was not found." noIndex />
+        <PageHeader title="Region Not Found" />
+      </Layout>
+    );
   }
+
+  const affiliate = getAffiliateLink("hotels");
 
   return (
     <Layout>
+      <SEOHead
+        title={`Vacation: ${region.name} — Best Places & Hidden Gems`}
+        description={region.intro}
+      />
       <PageHeader
         title={`Vacation: ${region.name}`}
         description={region.intro}
@@ -149,7 +163,7 @@ export default function VacationRegionPage() {
           </div>
         ))}
 
-        <div className="mb-10">
+        <section className="mb-10">
           <h2 className="font-display text-xl mb-3">Hidden Gems</h2>
           <ul className="space-y-2">
             {region.hiddenGems.map((gem, i) => (
@@ -159,26 +173,35 @@ export default function VacationRegionPage() {
               </li>
             ))}
           </ul>
-        </div>
+        </section>
 
         {region.dayTrips.map((dt, i) => (
-          <div key={i} className="mb-8">
+          <section key={i} className="mb-8">
             <h2 className="font-display text-xl mb-3">Day Trips from {dt.from}</h2>
             <div className="flex flex-wrap gap-2">
               {dt.destinations.map((dest, j) => (
-                <span key={j} className="px-3 py-1.5 rounded-full bg-secondary text-sm">
-                  {dest}
-                </span>
+                <span key={j} className="px-3 py-1.5 rounded-full bg-secondary text-sm">{dest}</span>
               ))}
             </div>
-          </div>
+          </section>
         ))}
 
         <div className="bg-secondary rounded-lg p-6 text-center">
           <h3 className="font-display text-lg mb-2">Compare Hotels</h3>
           <p className="text-sm text-muted-foreground mb-4">Find the best deals on accommodation in {region.name}.</p>
-          <Button>Compare Hotels →</Button>
-          <p className="text-xs text-muted-foreground mt-2">Affiliate link placeholder</p>
+          {affiliate && (
+            <a
+              href={affiliate.url}
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+              onClick={() => trackEvent({ name: "affiliate_click", provider: affiliate.provider, category: "hotels" })}
+            >
+              <Button>{affiliate.label} →</Button>
+            </a>
+          )}
+          <p className="text-xs text-muted-foreground mt-2">
+            <a href="/affiliate-disclosure" className="underline hover:text-primary">Affiliate link</a>
+          </p>
         </div>
       </div>
     </Layout>

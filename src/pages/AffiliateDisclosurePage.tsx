@@ -1,9 +1,14 @@
 import { Layout } from "@/components/Layout";
+import { SEOHead } from "@/components/SEOHead";
 import { PageHeader } from "@/components/PageHeader";
+import { staticRoutes } from "@/config/routes";
 
 export default function AffiliateDisclosurePage() {
+  const meta = staticRoutes["/affiliate-disclosure"];
+
   return (
     <Layout showNewsletter={false}>
+      <SEOHead title={meta.title} description={meta.description} noIndex />
       <PageHeader title="Affiliate Disclosure" breadcrumbs={[{ label: "Affiliate Disclosure" }]} />
       <div className="container py-12 max-w-2xl">
         <div className="prose prose-sm max-w-none text-muted-foreground space-y-4">
@@ -14,7 +19,7 @@ export default function AffiliateDisclosurePage() {
             Our recommendations are based on genuine research and our own experience as expats in Germany. We only recommend products and services that we believe will be helpful to you.
           </p>
           <h2 className="font-display text-lg text-foreground">Our Partners</h2>
-          <p>[Placeholder: List of affiliate partners such as CHECK24, financeAds, Booking.com, etc.]</p>
+          <p>We work with comparison and affiliate platforms to connect you with the best deals. Partner integrations are clearly marked throughout the site.</p>
           <h2 className="font-display text-lg text-foreground">How It Works</h2>
           <p>
             When you use our comparison tools or click "Compare now" buttons, you may be directed to our partner's website. If you sign up or purchase through that link, we receive a small commission. This helps us keep my-basics.de free and ad-free.

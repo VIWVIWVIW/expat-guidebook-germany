@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { Layout } from "@/components/Layout";
+import { SEOHead } from "@/components/SEOHead";
 import { PageHeader } from "@/components/PageHeader";
 import { ComparisonTable } from "@/components/ComparisonTable";
 
@@ -94,11 +95,20 @@ export default function ComparisonTablePage() {
   const data = tables[table || ""];
 
   if (!data) {
-    return <Layout><PageHeader title="Table Not Found" /></Layout>;
+    return (
+      <Layout>
+        <SEOHead title="Table Not Found" description="The requested comparison table was not found." noIndex />
+        <PageHeader title="Table Not Found" />
+      </Layout>
+    );
   }
 
   return (
     <Layout>
+      <SEOHead
+        title={data.title}
+        description={`Detailed ${data.title.toLowerCase()} for expats in Germany. Sort and compare providers.`}
+      />
       <PageHeader
         title={data.title}
         breadcrumbs={[{ label: "Compare" }, { label: data.title }]}
@@ -106,7 +116,7 @@ export default function ComparisonTablePage() {
       <div className="container py-12">
         <ComparisonTable columns={data.columns} rows={data.rows} />
         <p className="text-xs text-muted-foreground mt-4">
-          * Data is for illustration purposes. Prices and features may vary. Last updated: [Placeholder date].
+          * Data is for illustration purposes. Prices and features may vary. Always verify with the provider directly.
         </p>
       </div>
     </Layout>

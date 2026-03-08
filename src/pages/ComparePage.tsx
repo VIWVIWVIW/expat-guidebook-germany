@@ -1,15 +1,20 @@
 import { useParams, Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
+import { SEOHead } from "@/components/SEOHead";
 import { PageHeader } from "@/components/PageHeader";
 import { IframePlaceholder } from "@/components/IframePlaceholder";
 import { ComparisonTable } from "@/components/ComparisonTable";
 import { Button } from "@/components/ui/button";
+import { compareRouteMeta } from "@/config/routes";
+import { getAffiliateLink } from "@/services/affiliate";
+import { trackEvent } from "@/services/analytics";
 import heroCompare from "@/assets/hero-compare.jpg";
 
-const compareData: Record<string, { title: string; description: string; columns: { key: string; label: string }[]; rows: Record<string, string>[]; tablePath: string; guidePath: string; faqPath: string }> = {
+const compareData: Record<string, { title: string; description: string; intro: string; columns: { key: string; label: string }[]; rows: Record<string, string>[]; tablePath: string; guidePath: string; faqPath: string }> = {
   "bank-accounts": {
     title: "Compare Bank Accounts",
     description: "Find the best bank account for expats in Germany. Compare fees, English support, and features.",
+    intro: "Opening a bank account is one of the first things you'll need to do in Germany. Without one, you can't receive your salary, pay rent, or set up utilities. The good news: several banks now offer fully English apps and don't require a Schufa check — perfect for newcomers. Below we compare the most popular options for expats based on cost, language support, and accessibility.",
     tablePath: "/tables/bank-accounts-table",
     guidePath: "/guides/how-to-open-bank-account",
     faqPath: "/faq/bank-account",
@@ -31,6 +36,7 @@ const compareData: Record<string, { title: string; description: string; columns:
   "health-insurance": {
     title: "Compare Health Insurance",
     description: "GKV vs PKV — understand your options and find the right health insurance in Germany.",
+    intro: "Health insurance is mandatory in Germany — no exceptions. As an expat, you'll choose between public insurance (GKV) and private insurance (PKV). Your income, employment type, and personal situation determine which option is right for you. Below we compare the most popular providers based on cost, coverage, and English support.",
     tablePath: "/tables/health-insurance-table",
     guidePath: "/guides/how-to-choose-health-insurance",
     faqPath: "/faq/health-insurance",
@@ -51,6 +57,7 @@ const compareData: Record<string, { title: string; description: string; columns:
   "electricity-gas": {
     title: "Compare Electricity & Gas",
     description: "Switch your energy provider and save hundreds of euros per year.",
+    intro: "When you move into an apartment in Germany, you're automatically assigned the local default provider (Grundversorger) — which is almost always the most expensive option. Switching is easy, takes about 10 minutes online, and your new provider handles everything including cancellation. Most expats can save €200–400 per year by switching.",
     tablePath: "/tables/electricity-table",
     guidePath: "/guides/how-to-switch-electricity",
     faqPath: "/faq/electricity",
@@ -70,6 +77,7 @@ const compareData: Record<string, { title: string; description: string; columns:
   internet: {
     title: "Compare Internet Providers",
     description: "Find the fastest and cheapest internet for your home in Germany.",
+    intro: "Internet in Germany can be surprisingly slow and expensive if you don't compare. Availability varies by address — fiber isn't everywhere yet. Contracts are typically 24 months, but shorter options exist at a premium. Always check what's available at your specific address before committing.",
     tablePath: "/tables/internet-table",
     guidePath: "/guides/how-to-set-up-internet",
     faqPath: "/faq/internet",
@@ -89,6 +97,7 @@ const compareData: Record<string, { title: string; description: string; columns:
   investment: {
     title: "Compare Investment Platforms",
     description: "Start investing in Germany — compare brokers and robo-advisors.",
+    intro: "Germany has excellent low-cost investment platforms. Whether you want to invest in ETFs, stocks, or use a robo-advisor, there are several English-friendly options. Most expats start with a simple ETF savings plan — automated monthly investing into diversified index funds.",
     tablePath: "/tables/investment-table",
     guidePath: "/guides/how-to-open-bank-account",
     faqPath: "/faq/bank-account",
@@ -110,17 +119,31 @@ const compareData: Record<string, { title: string; description: string; columns:
 export default function ComparePage() {
   const { category } = useParams<{ category: string }>();
   const data = compareData[category || "bank-accounts"];
+  const meta = compareRouteMeta[category || "bank-accounts"];
 
   if (!data) {
     return (
       <Layout>
+        <SEOHead title="Compare" description="Category not found." noIndex />
         <PageHeader title="Compare" description="Category not found." />
       </Layout>
     );
   }
 
+  const affiliate = getAffiliateLink(category || "bank-accounts");
+
+  const handleAffiliateClick = () => {
+    if (affiliate) {
+      trackEvent({ name: "affiliate_click", provider: affiliate.provider, category: category || "" });
+    }
+  };
+
   return (
     <Layout>
+      <SEOHead
+        title={meta?.title || data.title}
+        description={meta?.description || data.description}
+      />
       <PageHeader
         title={data.title}
         description={data.description}
@@ -129,14 +152,12 @@ export default function ComparePage() {
       />
       <div className="container py-12 space-y-10">
         <div className="prose max-w-none">
-          <p className="text-muted-foreground">
-            [Placeholder: Detailed introduction about {data.title.toLowerCase()} for expats in Germany. This section will cover key considerations, what to look for, and common pitfalls.]
-          </p>
+          <p className="text-muted-foreground leading-relaxed">{data.intro}</p>
         </div>
 
         <IframePlaceholder
           title="Comparison tool will be embedded here"
-          description="CHECK24 / financeAds widget — iframe integration point. Add partner ID parameters to the embed URL."
+          description="Partner comparison widget — iframe integration point."
         />
 
         <div>
@@ -144,10 +165,10 @@ export default function ComparePage() {
           <ComparisonTable columns={data.columns} rows={data.rows} />
           <div className="mt-4 flex flex-wrap gap-3">
             <Link to={data.tablePath}>
-              <Button variant="outline">View Full Comparison Table →</Button>
+              <Button variant="outline">View Full Table →</Button>
             </Link>
             <Link to={data.guidePath}>
-              <Button variant="outline">Read the Guide →</Button>
+              <Button variant="outline">Step-by-Step Guide →</Button>
             </Link>
             <Link to={data.faqPath}>
               <Button variant="outline">FAQ →</Button>
@@ -160,9 +181,13 @@ export default function ComparePage() {
           <p className="text-sm text-muted-foreground mb-4">
             Use our comparison tool above or click below to get started.
           </p>
-          <Button>Compare Now →</Button>
+          {affiliate && (
+            <a href={affiliate.url} target="_blank" rel="noopener noreferrer nofollow" onClick={handleAffiliateClick}>
+              <Button>{affiliate.label} →</Button>
+            </a>
+          )}
           <p className="text-xs text-muted-foreground mt-3">
-            Affiliate link — we may earn a commission at no extra cost to you.
+            <Link to="/affiliate-disclosure" className="underline hover:text-primary">Affiliate link</Link> — we may earn a commission at no extra cost to you.
           </p>
         </div>
       </div>

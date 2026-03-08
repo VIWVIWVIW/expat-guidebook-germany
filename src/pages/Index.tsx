@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
+import { SEOHead } from "@/components/SEOHead";
 import { Button } from "@/components/ui/button";
 import { Landmark, Shield, Zap, Wifi, BookOpen, Calendar, MapPin, CheckSquare } from "lucide-react";
+import { siteConfig } from "@/config/site";
 import heroHomepage from "@/assets/hero-homepage.jpg";
 
 const features = [
@@ -18,9 +20,30 @@ const quickLinks = [
   { icon: MapPin, label: "Vacation in Germany", href: "/vacation", desc: "Hidden gems and travel inspiration" },
 ];
 
+const cities = ["Berlin", "Munich", "Hamburg", "Frankfurt", "Cologne", "Stuttgart", "Dresden", "Leipzig", "Düsseldorf"];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: siteConfig.name,
+  url: siteConfig.url,
+  description: siteConfig.description,
+  potentialAction: {
+    "@type": "SearchAction",
+    target: `${siteConfig.url}/glossary?q={search_term_string}`,
+    "query-input": "required name=search_term_string",
+  },
+};
+
 const Index = () => {
   return (
     <Layout>
+      <SEOHead
+        title={siteConfig.tagline}
+        description={siteConfig.description}
+        jsonLd={jsonLd}
+      />
+
       {/* Hero */}
       <section className="relative py-20 md:py-28 overflow-hidden">
         <img src={heroHomepage} alt="Germany cityscape" className="absolute inset-0 w-full h-full object-cover" loading="eager" />
@@ -38,9 +61,9 @@ const Index = () => {
                 Compare Now
               </Button>
             </Link>
-            <Link to="/guides/how-to-open-bank-account">
+            <Link to="/checklists/first-30-days">
               <Button size="lg" variant="outline" className="text-base px-8 border-white/30 text-white hover:bg-white/10">
-                Read Guides
+                First 30 Days Checklist
               </Button>
             </Link>
           </div>
@@ -52,7 +75,7 @@ const Index = () => {
         <div className="container">
           <h2 className="font-display text-2xl md:text-3xl text-center mb-3">Compare & Save</h2>
           <p className="text-muted-foreground text-center mb-10 max-w-lg mx-auto">
-            Find the best deals on banking, insurance, and utilities in Germany.
+            Side-by-side comparisons of banking, insurance, and utilities — tailored for expats.
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {features.map((f) => (
@@ -90,7 +113,32 @@ const Index = () => {
         </div>
       </section>
 
-      {/* City Guides Teaser */}
+      {/* Trust / Social Proof */}
+      <section className="py-12 border-b">
+        <div className="container text-center">
+          <p className="text-sm text-muted-foreground mb-4">Trusted by expats across Germany</p>
+          <div className="flex flex-wrap justify-center gap-8 text-sm text-muted-foreground">
+            <div className="text-center">
+              <p className="font-display text-2xl text-foreground">50+</p>
+              <p>Providers compared</p>
+            </div>
+            <div className="text-center">
+              <p className="font-display text-2xl text-foreground">6</p>
+              <p>Step-by-step guides</p>
+            </div>
+            <div className="text-center">
+              <p className="font-display text-2xl text-foreground">9</p>
+              <p>City guides</p>
+            </div>
+            <div className="text-center">
+              <p className="font-display text-2xl text-foreground">100%</p>
+              <p>Free to use</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* City Guides */}
       <section className="py-16">
         <div className="container text-center">
           <h2 className="font-display text-2xl md:text-3xl mb-3">City Guides</h2>
@@ -98,7 +146,7 @@ const Index = () => {
             Local tips for expats in Germany's biggest cities.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
-            {["Berlin", "Munich", "Hamburg", "Frankfurt", "Cologne", "Stuttgart", "Dresden", "Leipzig", "Düsseldorf"].map((city) => (
+            {cities.map((city) => (
               <Link
                 key={city}
                 to={`/cities/${city.toLowerCase().replace("ü", "u")}`}

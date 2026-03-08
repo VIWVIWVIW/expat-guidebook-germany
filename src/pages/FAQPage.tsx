@@ -1,8 +1,10 @@
 import { useParams, Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
+import { SEOHead } from "@/components/SEOHead";
 import { PageHeader } from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { faqRouteMeta } from "@/config/routes";
 import heroFaq from "@/assets/hero-faq.jpg";
 
 const faqData: Record<string, { title: string; description: string; questions: { q: string; a: string }[]; relatedGuide?: string; relatedCompare?: string }> = {
@@ -23,6 +25,8 @@ const faqData: Record<string, { title: string; description: string; questions: {
   "health-insurance": {
     title: "Health Insurance FAQ",
     description: "Common questions about GKV and PKV for expats.",
+    relatedGuide: "/guides/how-to-choose-health-insurance",
+    relatedCompare: "/compare/health-insurance",
     questions: [
       { q: "What's the difference between GKV and PKV?", a: "GKV (Gesetzliche Krankenversicherung) is public insurance — contributions are based on income. PKV (Private Krankenversicherung) is private — premiums are based on age, health, and coverage level." },
       { q: "Can I choose between GKV and PKV?", a: "If you earn above €69,300/year (2024) or are self-employed, you can choose PKV. Otherwise, GKV is mandatory for employees." },
@@ -34,6 +38,7 @@ const faqData: Record<string, { title: string; description: string; questions: {
   registration: {
     title: "Address Registration FAQ",
     description: "Common questions about the Anmeldung process.",
+    relatedGuide: "/guides/how-to-register-address",
     questions: [
       { q: "When do I need to register my address?", a: "Within 14 days of moving into your new apartment. Technically you can be fined for late registration, though enforcement varies." },
       { q: "What is a Wohnungsgeberbestätigung?", a: "A form your landlord must sign confirming that you live at the address. It's required for the Anmeldung." },
@@ -45,6 +50,7 @@ const faqData: Record<string, { title: string; description: string; questions: {
   "tax-id": {
     title: "Tax ID FAQ",
     description: "Common questions about the Steuer-ID and Steuernummer.",
+    relatedGuide: "/guides/how-to-get-tax-id",
     questions: [
       { q: "What's the difference between Steuer-ID and Steuernummer?", a: "The Steuer-ID is a lifelong personal tax number. The Steuernummer is assigned by your local tax office and can change if you move." },
       { q: "How long does it take to receive my Steuer-ID?", a: "Usually 2–4 weeks after your address registration (Anmeldung)." },
@@ -56,6 +62,8 @@ const faqData: Record<string, { title: string; description: string; questions: {
   electricity: {
     title: "Electricity FAQ",
     description: "Common questions about electricity and gas providers in Germany.",
+    relatedGuide: "/guides/how-to-switch-electricity",
+    relatedCompare: "/compare/electricity-gas",
     questions: [
       { q: "Am I automatically assigned an electricity provider?", a: "Yes. When you move in, you're automatically supplied by the local Grundversorger (default provider). You can switch to a cheaper provider at any time." },
       { q: "How often should I switch providers?", a: "At least once a year. Many providers offer introductory discounts that expire after 12 months." },
@@ -67,6 +75,8 @@ const faqData: Record<string, { title: string; description: string; questions: {
   internet: {
     title: "Internet FAQ",
     description: "Common questions about internet and broadband in Germany.",
+    relatedGuide: "/guides/how-to-set-up-internet",
+    relatedCompare: "/compare/internet",
     questions: [
       { q: "What internet speed do I need?", a: "For a single person: 50–100 Mbit/s is usually enough. For streaming and working from home: 100–250 Mbit/s. For families or gamers: 250+ Mbit/s." },
       { q: "What's the typical contract length?", a: "Usually 24 months, but many providers now offer 1-month or flexible contracts (often at a slightly higher price)." },
@@ -82,13 +92,18 @@ const faqCategories = Object.entries(faqData).map(([key, v]) => ({ key, label: v
 export default function FAQPage() {
   const { category } = useParams<{ category: string }>();
   const faq = faqData[category || "bank-account"];
+  const meta = faqRouteMeta[category || "bank-account"];
 
   if (!faq) {
-    return <Layout><PageHeader title="FAQ Not Found" /></Layout>;
+    return (
+      <Layout>
+        <SEOHead title="FAQ Not Found" description="The requested FAQ was not found." noIndex />
+        <PageHeader title="FAQ Not Found" />
+      </Layout>
+    );
   }
 
-  // Schema.org FAQ markup
-  const schemaMarkup = {
+  const jsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     mainEntity: faq.questions.map((q) => ({
@@ -100,7 +115,11 @@ export default function FAQPage() {
 
   return (
     <Layout>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaMarkup) }} />
+      <SEOHead
+        title={meta?.title || faq.title}
+        description={meta?.description || faq.description}
+        jsonLd={jsonLd}
+      />
       <PageHeader
         title={faq.title}
         description={faq.description}
@@ -108,7 +127,7 @@ export default function FAQPage() {
         heroImage={heroFaq}
       />
       <div className="container py-12 max-w-3xl">
-        <div className="flex flex-wrap gap-2 mb-8">
+        <nav className="flex flex-wrap gap-2 mb-8" aria-label="FAQ categories">
           {faqCategories.map((cat) => (
             <Link key={cat.key} to={`/faq/${cat.key}`}>
               <button className={`px-3 py-1.5 rounded-full text-sm border transition-colors ${cat.key === category ? "bg-primary text-primary-foreground border-primary" : "hover:bg-secondary"}`}>
@@ -116,7 +135,7 @@ export default function FAQPage() {
               </button>
             </Link>
           ))}
-        </div>
+        </nav>
 
         <Accordion type="single" collapsible className="space-y-3">
           {faq.questions.map((q, i) => (
@@ -132,18 +151,12 @@ export default function FAQPage() {
             <h3 className="font-display text-lg mb-3">Related Resources</h3>
             <div className="flex flex-wrap gap-3">
               {faq.relatedGuide && (
-                <Link to={faq.relatedGuide}>
-                  <Button variant="outline" size="sm">Read the Guide →</Button>
-                </Link>
+                <Link to={faq.relatedGuide}><Button variant="outline" size="sm">Read the Guide →</Button></Link>
               )}
               {faq.relatedCompare && (
-                <Link to={faq.relatedCompare}>
-                  <Button variant="outline" size="sm">Compare Now →</Button>
-                </Link>
+                <Link to={faq.relatedCompare}><Button variant="outline" size="sm">Compare Now →</Button></Link>
               )}
-              <Link to="/glossary">
-                <Button variant="outline" size="sm">Glossary →</Button>
-              </Link>
+              <Link to="/glossary"><Button variant="outline" size="sm">Glossary →</Button></Link>
             </div>
           </div>
         )}
