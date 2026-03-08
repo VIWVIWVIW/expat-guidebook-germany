@@ -20,6 +20,8 @@ const guides: Record<string, { title: string; meta: string; time: string; docs: 
     ],
     compareLink: "/compare/bank-accounts",
     compareLabel: "Compare Bank Accounts",
+    relatedFaq: "/faq/bank-account",
+    relatedTable: "/tables/bank-accounts-table",
   },
   "how-to-register-address": {
     title: "How to Register Your Address in Germany",
