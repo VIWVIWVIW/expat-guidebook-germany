@@ -142,9 +142,15 @@ export default function ComparePage() {
         <div>
           <h2 className="font-display text-xl mb-4">Quick Comparison</h2>
           <ComparisonTable columns={data.columns} rows={data.rows} />
-          <div className="mt-4">
+          <div className="mt-4 flex flex-wrap gap-3">
             <Link to={data.tablePath}>
               <Button variant="outline">View Full Comparison Table →</Button>
+            </Link>
+            <Link to={data.guidePath}>
+              <Button variant="outline">Read the Guide →</Button>
+            </Link>
+            <Link to={data.faqPath}>
+              <Button variant="outline">FAQ →</Button>
             </Link>
           </div>
         </div>
