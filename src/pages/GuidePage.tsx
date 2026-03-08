@@ -107,6 +107,8 @@ const guides: Record<string, { title: string; meta: string; time: string; docs: 
     ],
     compareLink: "/compare/internet",
     compareLabel: "Compare Internet Providers",
+    relatedFaq: "/faq/internet",
+    relatedTable: "/tables/internet-table",
   },
 };
 
