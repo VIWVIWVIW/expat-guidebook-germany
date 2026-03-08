@@ -46,7 +46,7 @@ const compareData: Record<string, { title: string; description: string; columns:
   "electricity-gas": {
     title: "Compare Electricity & Gas",
     description: "Switch your energy provider and save hundreds of euros per year.",
-    tablePath: "/compare/electricity-table",
+    tablePath: "/tables/electricity-table",
     columns: [
       { key: "provider", label: "Provider" },
       { key: "cost", label: "Monthly Cost" },
