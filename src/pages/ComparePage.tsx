@@ -9,7 +9,7 @@ const compareData: Record<string, { title: string; description: string; columns:
   "bank-accounts": {
     title: "Compare Bank Accounts",
     description: "Find the best bank account for expats in Germany. Compare fees, English support, and features.",
-    tablePath: "/compare/bank-accounts-table",
+    tablePath: "/tables/bank-accounts-table",
     columns: [
       { key: "bank", label: "Bank" },
       { key: "cost", label: "Monthly Cost" },
