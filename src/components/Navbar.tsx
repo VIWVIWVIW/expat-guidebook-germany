@@ -2,45 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-const navItems = [
-  {
-    label: "Compare",
-    children: [
-      { label: "Bank Accounts", href: "/compare/bank-accounts" },
-      { label: "Health Insurance", href: "/compare/health-insurance" },
-      { label: "Electricity & Gas", href: "/compare/electricity-gas" },
-      { label: "Internet", href: "/compare/internet" },
-      { label: "Investment", href: "/compare/investment" },
-    ],
-  },
-  {
-    label: "Guides",
-    children: [
-      { label: "Open a Bank Account", href: "/guides/how-to-open-bank-account" },
-      { label: "Register Your Address", href: "/guides/how-to-register-address" },
-      { label: "Get Your Tax ID", href: "/guides/how-to-get-tax-id" },
-      { label: "Choose Health Insurance", href: "/guides/how-to-choose-health-insurance" },
-      { label: "Switch Electricity", href: "/guides/how-to-switch-electricity" },
-      { label: "Set Up Internet", href: "/guides/how-to-set-up-internet" },
-    ],
-  },
-  {
-    label: "Checklists",
-    href: "/checklists/first-30-days",
-  },
-  {
-    label: "More",
-    children: [
-      { label: "FAQ", href: "/faq/bank-account" },
-      { label: "Glossary", href: "/glossary" },
-      { label: "City Guides", href: "/cities/berlin" },
-      { label: "Calendar", href: "/calendar" },
-      { label: "Vacation", href: "/vacation" },
-      { label: "Blog", href: "/blog" },
-    ],
-  },
-];
+import { primaryNav } from "@/config/site";
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -54,9 +16,9 @@ export function Navbar() {
         </Link>
 
         {/* Desktop */}
-        <nav className="hidden lg:flex items-center gap-1">
-          {navItems.map((item) =>
-            item.children ? (
+        <nav className="hidden lg:flex items-center gap-1" aria-label="Main navigation">
+          {primaryNav.map((item) =>
+            "children" in item ? (
               <div
                 key={item.label}
                 className="relative group"
@@ -87,7 +49,7 @@ export function Navbar() {
             ) : (
               <Link
                 key={item.label}
-                to={item.href!}
+                to={item.href}
                 className="px-3 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors"
               >
                 {item.label}
@@ -112,9 +74,9 @@ export function Navbar() {
       {/* Mobile menu */}
       {mobileOpen && (
         <div className="lg:hidden border-t bg-card">
-          <div className="container py-4 space-y-2">
-            {navItems.map((item) =>
-              item.children ? (
+          <nav className="container py-4 space-y-2" aria-label="Mobile navigation">
+            {primaryNav.map((item) =>
+              "children" in item ? (
                 <div key={item.label}>
                   <p className="px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                     {item.label}
@@ -133,7 +95,7 @@ export function Navbar() {
               ) : (
                 <Link
                   key={item.label}
-                  to={item.href!}
+                  to={item.href}
                   className="block px-3 py-2 text-sm font-medium hover:bg-secondary rounded-md"
                   onClick={() => setMobileOpen(false)}
                 >
@@ -144,7 +106,7 @@ export function Navbar() {
             <Link to="/newsletter" onClick={() => setMobileOpen(false)}>
               <Button className="w-full mt-2">Subscribe</Button>
             </Link>
-          </div>
+          </nav>
         </div>
       )}
     </header>

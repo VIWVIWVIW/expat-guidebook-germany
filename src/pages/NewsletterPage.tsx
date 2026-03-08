@@ -1,11 +1,16 @@
 import { Layout } from "@/components/Layout";
+import { SEOHead } from "@/components/SEOHead";
 import { PageHeader } from "@/components/PageHeader";
 import { NewsletterForm } from "@/components/NewsletterForm";
+import { staticRoutes } from "@/config/routes";
 import heroNewsletter from "@/assets/hero-newsletter.jpg";
 
 export default function NewsletterPage() {
+  const meta = staticRoutes["/newsletter"];
+
   return (
     <Layout showNewsletter={false}>
+      <SEOHead title={meta.title} description={meta.description} />
       <PageHeader
         title="Newsletter"
         description="Get the latest expat finance tips, guides, and deals delivered to your inbox."

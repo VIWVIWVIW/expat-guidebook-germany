@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
+import { SEOHead } from "@/components/SEOHead";
 import { PageHeader } from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
+import { trackEvent } from "@/services/analytics";
 import heroChecklist from "@/assets/hero-checklist.jpg";
 
 const checklists: Record<string, { title: string; description: string; items: string[] }> = {
@@ -80,19 +82,31 @@ export default function ChecklistPage() {
   const [checked, setChecked] = useState<Set<number>>(new Set());
 
   if (!checklist) {
-    return <Layout><PageHeader title="Checklist Not Found" /></Layout>;
+    return (
+      <Layout>
+        <SEOHead title="Checklist Not Found" description="The requested checklist was not found." noIndex />
+        <PageHeader title="Checklist Not Found" />
+      </Layout>
+    );
   }
 
   const toggle = (i: number) => {
     setChecked((prev) => {
       const next = new Set(prev);
       next.has(i) ? next.delete(i) : next.add(i);
+      if (next.size === checklist.items.length) {
+        trackEvent({ name: "checklist_complete", slug: slug || "", itemsChecked: next.size });
+      }
       return next;
     });
   };
 
   return (
     <Layout>
+      <SEOHead
+        title={`${checklist.title} Checklist for Expats`}
+        description={checklist.description}
+      />
       <PageHeader
         title={checklist.title}
         description={checklist.description}
@@ -100,7 +114,7 @@ export default function ChecklistPage() {
         heroImage={heroChecklist}
       />
       <div className="container py-12 max-w-2xl">
-        <div className="flex gap-3 mb-8">
+        <nav className="flex flex-wrap gap-3 mb-8" aria-label="Checklist selection">
           {Object.entries(checklists).map(([key, cl]) => (
             <Link key={key} to={`/checklists/${key}`}>
               <Button variant={key === slug ? "default" : "outline"} size="sm">
@@ -108,7 +122,7 @@ export default function ChecklistPage() {
               </Button>
             </Link>
           ))}
-        </div>
+        </nav>
 
         <div className="space-y-3 mb-8">
           {checklist.items.map((item, i) => (
@@ -131,15 +145,13 @@ export default function ChecklistPage() {
           ))}
         </div>
 
-        <p className="text-sm text-muted-foreground mb-2">
+        <p className="text-sm text-muted-foreground mb-4">
           {checked.size} of {checklist.items.length} completed
         </p>
 
-        <Button variant="outline" asChild>
-          <a href="#" download>
-            <Download className="h-4 w-4 mr-2" />
-            Download PDF (Coming Soon)
-          </a>
+        <Button variant="outline" disabled>
+          <Download className="h-4 w-4 mr-2" />
+          Download PDF (Coming Soon)
         </Button>
       </div>
     </Layout>

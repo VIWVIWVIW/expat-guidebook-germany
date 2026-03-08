@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
+import { SEOHead } from "@/components/SEOHead";
 import { PageHeader } from "@/components/PageHeader";
+import { staticRoutes } from "@/config/routes";
+import { siteConfig } from "@/config/site";
 import heroGlossary from "@/assets/hero-glossary.jpg";
 
 const glossaryTerms = [
@@ -26,8 +29,22 @@ const glossaryTerms = [
   { term: "Zählernummer", definition: "Meter number for electricity/gas — needed when switching providers.", guide: "/guides/how-to-switch-electricity" },
 ];
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "DefinedTermSet",
+  name: "German Finance Glossary for Expats",
+  description: staticRoutes["/glossary"].description,
+  url: `${siteConfig.url}/glossary`,
+  hasDefinedTerm: glossaryTerms.map((t) => ({
+    "@type": "DefinedTerm",
+    name: t.term,
+    description: t.definition,
+  })),
+};
+
 export default function GlossaryPage() {
   const [search, setSearch] = useState("");
+  const meta = staticRoutes["/glossary"];
   const filtered = glossaryTerms.filter(
     (t) =>
       t.term.toLowerCase().includes(search.toLowerCase()) ||
@@ -38,6 +55,7 @@ export default function GlossaryPage() {
 
   return (
     <Layout>
+      <SEOHead title={meta.title} description={meta.description} jsonLd={jsonLd} />
       <PageHeader
         title="Glossary"
         description="Key German terms every expat should know — from Anmeldung to Zählernummer."
@@ -51,6 +69,7 @@ export default function GlossaryPage() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="w-full px-4 py-2.5 rounded-lg border bg-card text-sm mb-8 focus:outline-none focus:ring-2 focus:ring-ring"
+          aria-label="Search glossary"
         />
 
         {letters.map((letter) => (

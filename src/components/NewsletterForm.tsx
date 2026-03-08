@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import { subscribeToNewsletter } from "@/services/newsletter";
+import { trackEvent } from "@/services/analytics";
 
 interface NewsletterFormProps {
   variant?: "default" | "hero";
@@ -16,11 +18,16 @@ export function NewsletterForm({ variant = "default" }: NewsletterFormProps) {
     if (!email) return;
     setLoading(true);
 
-    // TODO: Connect to Supabase subscribers table
-    // For now, simulate signup
-    await new Promise((r) => setTimeout(r, 800));
-    toast.success("Thanks for subscribing! Check your email to confirm.");
-    setEmail("");
+    const result = await subscribeToNewsletter(email);
+
+    if (result.success) {
+      toast.success(result.message);
+      trackEvent({ name: "newsletter_subscribe" });
+      setEmail("");
+    } else {
+      toast.error(result.message);
+    }
+
     setLoading(false);
   };
 
