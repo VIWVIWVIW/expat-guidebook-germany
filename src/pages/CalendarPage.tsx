@@ -46,6 +46,37 @@ export default function CalendarPage() {
 
   const filtered = activeCategory === "All" ? entries : entries.filter((e) => e.category === activeCategory);
 
+  const downloadICS = (name: string, items: CalendarEntry[]) => {
+    const year = new Date().getFullYear();
+    const pad = (n: number) => n.toString().padStart(2, "0");
+    const lines = [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "PRODID:-//my-basics.de//Expat Calendar//EN",
+      `X-WR-CALNAME:${name} - my-basics.de`,
+    ];
+    items.forEach((item) => {
+      const dateStr = `${year}${pad(item.month)}${pad(item.day)}`;
+      lines.push(
+        "BEGIN:VEVENT",
+        `DTSTART;VALUE=DATE:${dateStr}`,
+        `DTEND;VALUE=DATE:${dateStr}`,
+        `SUMMARY:${item.title}`,
+        `DESCRIPTION:${item.description}`,
+        `UID:${dateStr}-${item.title.replace(/\s+/g, "-").toLowerCase()}@my-basics.de`,
+        "END:VEVENT"
+      );
+    });
+    lines.push("END:VCALENDAR");
+    const blob = new Blob([lines.join("\r\n")], { type: "text/calendar;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${name.replace(/\s+/g, "-").toLowerCase()}.ics`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <Layout>
       <PageHeader
