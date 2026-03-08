@@ -4,7 +4,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import heroFaq from "@/assets/hero-faq.jpg";
 
-const faqData: Record<string, { title: string; description: string; questions: { q: string; a: string }[] }> = {
+const faqData: Record<string, { title: string; description: string; questions: { q: string; a: string }[]; relatedGuide?: string; relatedCompare?: string }> = {
   "bank-account": {
     title: "Bank Account FAQ",
     description: "Common questions about opening and using a bank account in Germany.",
