@@ -125,6 +125,27 @@ export default function FAQPage() {
             </AccordionItem>
           ))}
         </Accordion>
+
+        {(faq.relatedGuide || faq.relatedCompare) && (
+          <div className="mt-10 bg-secondary rounded-lg p-6">
+            <h3 className="font-display text-lg mb-3">Related Resources</h3>
+            <div className="flex flex-wrap gap-3">
+              {faq.relatedGuide && (
+                <Link to={faq.relatedGuide}>
+                  <Button variant="outline" size="sm">Read the Guide →</Button>
+                </Link>
+              )}
+              {faq.relatedCompare && (
+                <Link to={faq.relatedCompare}>
+                  <Button variant="outline" size="sm">Compare Now →</Button>
+                </Link>
+              )}
+              <Link to="/glossary">
+                <Button variant="outline" size="sm">Glossary →</Button>
+              </Link>
+            </div>
+          </div>
+        )}
       </div>
     </Layout>
   );
