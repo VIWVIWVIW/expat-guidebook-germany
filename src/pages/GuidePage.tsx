@@ -38,6 +38,7 @@ const guides: Record<string, { title: string; meta: string; time: string; docs: 
     ],
     compareLink: "/guides/how-to-get-tax-id",
     compareLabel: "Next: Get Your Tax ID",
+    relatedFaq: "/faq/registration",
   },
   "how-to-get-tax-id": {
     title: "How to Get Your Tax ID (Steuer-ID)",
