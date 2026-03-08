@@ -89,6 +89,8 @@ const guides: Record<string, { title: string; meta: string; time: string; docs: 
     ],
     compareLink: "/compare/electricity-gas",
     compareLabel: "Compare Electricity Providers",
+    relatedFaq: "/faq/electricity",
+    relatedTable: "/tables/electricity-table",
   },
   "how-to-set-up-internet": {
     title: "How to Set Up Internet at Home",
