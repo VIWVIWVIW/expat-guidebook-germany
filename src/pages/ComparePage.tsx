@@ -80,7 +80,7 @@ const compareData: Record<string, { title: string; description: string; columns:
   investment: {
     title: "Compare Investment Platforms",
     description: "Start investing in Germany — compare brokers and robo-advisors.",
-    tablePath: "/compare/investment-table",
+    tablePath: "/tables/investment-table",
     columns: [
       { key: "platform", label: "Platform" },
       { key: "type", label: "Type" },
